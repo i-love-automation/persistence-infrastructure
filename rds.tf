@@ -1,19 +1,19 @@
-resource "aws_db_instance" "taxi_rds_instance" {
+resource "aws_db_instance" "rds_instance" {
   allocated_storage                   = 20
   max_allocated_storage               = 50
-  db_name                             = "taxi"
-  identifier                          = "taxi"
+  db_name                             = var.project
+  identifier                          = var.project
   engine                              = "postgres"
   engine_version                      = "14.6"
   instance_class                      = "db.t3.micro"
   ca_cert_identifier                  = "rds-ca-2019"
-  username                            = var.db_username
-  password                            = var.db_password
+  username                            = var.project
+  manage_master_user_password         = true
   multi_az                            = false
   skip_final_snapshot                 = true
   storage_encrypted                   = true
   storage_type                        = "gp2"
-  iam_database_authentication_enabled = false # TODO Pass to true and manage secrets through IAM
+  iam_database_authentication_enabled = false
   enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
   apply_immediately                   = true
   network_type                        = "IPV4"
