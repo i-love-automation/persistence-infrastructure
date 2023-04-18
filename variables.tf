@@ -11,17 +11,13 @@ variable "service" {
 }
 
 variable "private_subnets_id" {
-  default = ""
+  type        = list(string)
+  nullable    = false
+  description = "The ids of the project vpc private subnets where the db instance is hosted"
 }
 
 variable "vpc_id" {
-  default = ""
-}
-
-variable "db_username" {
-  default = ""
-}
-
-variable "db_password" {
-  default = ""
+  type        = string
+  nullable    = false
+  description = "The id of the project vpc"
 }
