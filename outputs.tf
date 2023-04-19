@@ -1,9 +1,17 @@
+data "aws_secretsmanager_secret" "rds_password_secret" {
+  arn = aws_db_instance.rds_instance.master_user_secret.secret_arn
+}
+
+data "aws_secretsmanager_secret_version" "rds_password_secret_version" {
+  secret_id = data.aws_secretsmanager_secret.rds_password_secret.id
+}
+
 locals {
   export_as_organization_variable = {
     "db_connexion_string" = {
       hcl       = false
       sensitive = false
-      value     = "postgres://${aws_db_instance.rds_instance.username}:${aws_db_instance.rds_instance.password}@${aws_db_instance.rds_instance.endpoint}/${aws_db_instance.rds_instance.db_name}"
+      value     = "postgres://${aws_db_instance.rds_instance.username}:${aws_secretsmanager_secret_version.rds_password_secret_version.secret_string}@${aws_db_instance.rds_instance.endpoint}/${aws_db_instance.rds_instance.db_name}"
     }
   }
 }
